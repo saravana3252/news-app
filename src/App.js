@@ -1,23 +1,42 @@
-import logo from './logo.svg';
+
+import { useEffect, useState } from 'react';
 import './App.css';
+import News from './News';
+import Header from './Header';
+
+
+
 
 function App() {
+
+let [newsData,setnewsData]=useState([])
+let [category,setCategory]=useState("dubai")
+
+
+function updateCategory(category){
+  setCategory(category)
+}
+
+  useEffect(()=>{
+    fetch(`https://newsapi.org/v2/everything?q=${category}&from=2024-12-02&apiKey=92836ab84f214793a750f25cd4dc3aa2`)
+    .then((response)=>response.json())
+    .then((data)=>{
+      setnewsData(data.articles)
+      console.log(newsData)
+    })
+  },[category])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header data={updateCategory}></Header>
+      <div className='font-bold text-2xl pt-2 px-2 italic bg-gray-100'>NEWS CATEGORY: <span className='font-normal'>{category}</span></div>
+      <div className='p-5 grid grid-cols-2 gap-5 bg-gray-100 md:grid-cols-3 md:gap-10 md:p-10'>
+    {
+      newsData.length!==0?
+      newsData.map((data)=>{
+        return <News data={data}></News>
+      }):<p>SEARCH NOT FOUND</p>
+    }
+     </div>
     </div>
   );
 }
