@@ -18,7 +18,7 @@ function updateCategory(category){
 }
 
   useEffect(()=>{
-    fetch(`https://newsapi.org/v2/everything?q=${category}&from=2024-12-02&apiKey=92836ab84f214793a750f25cd4dc3aa2`)
+    fetch(`https://newsapi.org/v2/everything?q=${category}&from=2024-12-02&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`)
     .then((response)=>response.json())
     .then((data)=>{
       setnewsData(data.articles)
